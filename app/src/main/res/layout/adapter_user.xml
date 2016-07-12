@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_margin="10dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/iv_icon"
+        android:layout_toRightOf="@+id/iv_icon"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:text="姓名: "/>
+
+    <TextView
+        android:id="@+id/tv_user_age"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/iv_icon"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_toRightOf="@+id/iv_icon"/>
+</RelativeLayout>
