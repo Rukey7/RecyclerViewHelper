@@ -6,8 +6,10 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.dl7.helperlibrary.adapter.BaseQuickAdapter;
 import com.dl7.helperlibrary.divider.DividerGridItemDecoration;
 import com.dl7.helperlibrary.divider.DividerItemDecoration;
+import com.dl7.helperlibrary.listener.OnRequestDataListener;
 
 
 /**
@@ -34,6 +36,19 @@ public class ViewHelper {
         if (isDivided) {
             view.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL_LIST));
         }
+    }
+
+    public static void initRecyclerViewV(Context context, RecyclerView view, boolean isDivided, BaseQuickAdapter adapter,
+                                         OnRequestDataListener listener) {
+        initRecyclerViewV(context, view, isDivided);
+        adapter.enableLoadMore(true);
+        adapter.setRequestDataListener(listener);
+        view.setAdapter(adapter);
+    }
+
+    public static void initRecyclerViewV(Context context, RecyclerView view, BaseQuickAdapter adapter,
+                                         OnRequestDataListener listener) {
+        initRecyclerViewV(context, view, false, adapter, listener);
     }
 
     /**

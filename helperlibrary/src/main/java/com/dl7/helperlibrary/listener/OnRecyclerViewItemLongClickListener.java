@@ -7,7 +7,7 @@ import android.view.View;
  * Interface definition for a callback to be invoked when an item in this
  * view has been clicked and held
  */
-public interface OnItemLongClickListener {
+public interface OnRecyclerViewItemLongClickListener {
     /**
      * callback method to be invoked when an item in this view has been
      * click and held

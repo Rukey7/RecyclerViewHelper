@@ -1,9 +1,13 @@
 package com.dl7.recyclerviewhelper.adapter;
 
+import android.content.Context;
+
 import com.dl7.helperlibrary.adapter.BaseQuickAdapter;
 import com.dl7.helperlibrary.adapter.BaseViewHolder;
 import com.dl7.recyclerviewhelper.R;
 import com.dl7.recyclerviewhelper.entity.UserInfo;
+
+import java.util.List;
 
 /**
  * Created by long on 2016/7/12.
@@ -11,6 +15,14 @@ import com.dl7.recyclerviewhelper.entity.UserInfo;
  */
 public class UserAdapter extends BaseQuickAdapter<UserInfo> {
 
+
+    public UserAdapter(Context context) {
+        super(context);
+    }
+
+    public UserAdapter(Context context, List<UserInfo> data) {
+        super(context, data);
+    }
 
     @Override
     protected void convert(BaseViewHolder holder, UserInfo item) {
