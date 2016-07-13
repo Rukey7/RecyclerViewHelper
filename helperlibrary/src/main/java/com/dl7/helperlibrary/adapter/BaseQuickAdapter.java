@@ -36,7 +36,7 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
     protected int mLayoutResId;
     protected LayoutInflater mLayoutInflater;
     protected List<T> mData;
-    private View mContentView;
+    // head and footer
     private View mHeaderView;
     private View mFooterView;
     // listener
@@ -49,6 +49,8 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
     private View mLoadingView;
     private TextView mLoadingDesc;
     private SpinKitView mLoadingIcon;
+    // empty
+    private View mEmptyView;
 
 
     public BaseQuickAdapter(Context context) {
@@ -87,6 +89,9 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
     @Override
     public int getItemCount() {
         int count = mData.size() + getHeaderViewsCount() + getFooterViewsCount();
+        if (count == 0 && mEmptyView != null) {
+            return 1;
+        }
         if (mIsLoadMoreEnable) {
             count++;
         }
@@ -100,9 +105,10 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
 
     @Override
     public int getItemViewType(int position) {
-        // if set headView and position =0
         if (mHeaderView != null && position == 0) {
             return HEADER_VIEW;
+        } else if ((mData.size() + getHeaderViewsCount() + getFooterViewsCount()) == 0 && mEmptyView != null) {
+            return EMPTY_VIEW;
         } else if (mIsLoadMoreEnable) {
             if (position == (getItemCount() - 1)) {
                 return LOADING_VIEW;
@@ -173,12 +179,14 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
                 baseViewHolder = new BaseViewHolder(mHeaderView);
                 break;
             case EMPTY_VIEW:
+                baseViewHolder = new BaseViewHolder(mEmptyView);
                 break;
             case FOOTER_VIEW:
                 baseViewHolder = new BaseViewHolder(mFooterView);
                 break;
             default:
-                baseViewHolder = onCreateDefViewHolder(parent, viewType);
+                View view = mLayoutInflater.inflate(mLayoutResId, parent, false);
+                baseViewHolder = new BaseViewHolder(view);
                 _initItemClickListener(baseViewHolder);
                 break;
         }
@@ -201,28 +209,6 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
                 convert((BaseViewHolder) holder, mData.get(holder.getLayoutPosition() - getHeaderViewsCount()));
                 break;
         }
-    }
-
-    protected BaseViewHolder onCreateDefViewHolder(ViewGroup parent, int viewType) {
-        return createBaseViewHolder(parent, mLayoutResId);
-    }
-
-    protected BaseViewHolder createBaseViewHolder(ViewGroup parent, int layoutResId) {
-        if (mContentView == null) {
-            return new BaseViewHolder(getItemView(layoutResId, parent));
-        }
-        return new BaseViewHolder(mContentView);
-    }
-
-    /**
-     * @param layoutResId ID for an XML layout resource to load
-     * @param parent      Optional view to be the parent of the generated hierarchy or else simply an object that
-     *                    provides a set of LayoutParams values for root of the returned
-     *                    hierarchy
-     * @return view will be return
-     */
-    protected View getItemView(int layoutResId, ViewGroup parent) {
-        return mLayoutInflater.inflate(layoutResId, parent, false);
     }
 
     /************************************* 刷新加载 ****************************************/
@@ -281,7 +267,8 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
     }
 
     public void addHeaderView(View headerView) {
-        headerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        headerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
         mHeaderView = headerView;
         notifyDataSetChanged();
     }
@@ -291,27 +278,34 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
     }
 
     public void addFooterView(View footerView) {
-        footerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        footerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
         mFooterView = footerView;
         notifyDataSetChanged();
     }
 
-    /**
-     * if setHeadView will be return 1 if not will be return 0
-     *
-     * @return
-     */
     public int getHeaderViewsCount() {
         return mHeaderView == null ? 0 : 1;
     }
 
-    /**
-     * if mFooterView will be return 1 or not will be return 0
-     *
-     * @return
-     */
     public int getFooterViewsCount() {
         return mFooterView == null ? 0 : 1;
+    }
+
+    /************************************空数据****************************************/
+
+    public View getEmptyView() {
+        return mEmptyView;
+    }
+
+    public void setEmptyView(View emptyView) {
+        mEmptyView = emptyView;
+        mEmptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+    }
+
+    public int getEmptyViewCount() {
+        return mEmptyView == null ? 0 : 1;
     }
 
     /************************************数据操作****************************************/
