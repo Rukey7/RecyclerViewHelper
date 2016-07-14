@@ -1,6 +1,7 @@
 package com.dl7.helperlibrary.helper;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -111,5 +112,6 @@ public class RecyclerViewHelper {
                 itemTouchHelper.startDrag(viewHolder);
             }
         });
+        adapter.setDragColor(Color.LTGRAY);
     }
 }

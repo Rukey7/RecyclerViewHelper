@@ -4,12 +4,11 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -37,8 +36,8 @@ public class BaseViewHolder extends RecyclerView.ViewHolder implements ItemTouch
 
 
     public View convertView;
-    private static int dragColor = Color.LTGRAY;
-    private static int freeColor = Color.WHITE;
+    private Drawable bgDrawable;
+    private static Drawable dragDrawable;
 
 
     protected BaseViewHolder(View view) {
@@ -442,29 +441,25 @@ public class BaseViewHolder extends RecyclerView.ViewHolder implements ItemTouch
 
     @Override
     public void onItemSelected() {
-        Log.e("BaseViewHolder", ""+getAdapterPosition());
-        if (itemView instanceof CardView) {
-            ((CardView)itemView).setCardBackgroundColor(dragColor);
-        } else {
-            itemView.setBackgroundColor(dragColor);
+        if (bgDrawable == null) {
+            bgDrawable = itemView.getBackground();
         }
+        if (dragDrawable == null) {
+            dragDrawable = new ColorDrawable(Color.LTGRAY);
+        }
+        itemView.setBackgroundDrawable(dragDrawable);
     }
 
     @Override
     public void onItemClear() {
-        Log.w("BaseViewHolder", ""+getAdapterPosition());
-        if (itemView instanceof CardView) {
-            ((CardView)itemView).setCardBackgroundColor(freeColor);
-        } else {
-            itemView.setBackgroundColor(freeColor);
-        }
+        itemView.setBackgroundDrawable(bgDrawable);
     }
 
     public static void setDragColor(int dragColor) {
-        BaseViewHolder.dragColor = dragColor;
+        BaseViewHolder.dragDrawable = new ColorDrawable(dragColor);
     }
 
-    public static void setFreeColor(int freeColor) {
-        BaseViewHolder.freeColor = freeColor;
+    public static void setDragDrawable(Drawable drawable) {
+        BaseViewHolder.dragDrawable = drawable;
     }
 }

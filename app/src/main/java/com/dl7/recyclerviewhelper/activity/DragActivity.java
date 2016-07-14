@@ -1,6 +1,7 @@
 package com.dl7.recyclerviewhelper.activity;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
@@ -30,6 +31,7 @@ public class DragActivity extends Activity {
         mAdapter = new DragAdapter(this);
         RecyclerViewHelper.initRecyclerViewV(this, mRvList, mAdapter);
         RecyclerViewHelper.startDragAndSwipe(mRvList, mAdapter);
+        mAdapter.setDragColor(Color.RED);
 
         List<String> list = new ArrayList<>();
         for (int i = 0; i < 20; i++) {

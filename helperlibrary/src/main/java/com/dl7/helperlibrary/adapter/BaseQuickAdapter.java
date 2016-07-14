@@ -524,10 +524,6 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
         BaseViewHolder.setDragColor(dragColor);
     }
 
-    public void setFreeColor(int freeColor) {
-        BaseViewHolder.setFreeColor(freeColor);
-    }
-
     /************************************* Tag标志 ****************************************/
 
     /**
