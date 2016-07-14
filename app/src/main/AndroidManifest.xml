@@ -21,6 +21,8 @@
         </activity>
         <activity android:name=".activity.EmptyActivity">
         </activity>
+        <activity android:name=".activity.DragActivity">
+        </activity>
     </application>
 
 </manifest>

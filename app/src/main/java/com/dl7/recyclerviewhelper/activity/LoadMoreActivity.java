@@ -10,11 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dl7.helperlibrary.helper.RecyclerViewHelper;
 import com.dl7.helperlibrary.indicator.Style;
 import com.dl7.helperlibrary.listener.OnRecyclerViewItemClickListener;
 import com.dl7.helperlibrary.listener.OnRecyclerViewItemLongClickListener;
 import com.dl7.helperlibrary.listener.OnRequestDataListener;
-import com.dl7.helperlibrary.utils.ViewHelper;
 import com.dl7.recyclerviewhelper.R;
 import com.dl7.recyclerviewhelper.adapter.UserAdapter;
 import com.dl7.recyclerviewhelper.entity.UserInfo;
@@ -46,7 +46,7 @@ public class LoadMoreActivity extends Activity {
 
         mAdapter = new UserAdapter(this);
         mAdapter.setLoadStyle(Style.WANDERING_CUBES);
-        ViewHelper.initRecyclerViewV(this, mRvList, mAdapter, new OnRequestDataListener() {
+        RecyclerViewHelper.initRecyclerViewV(this, mRvList, mAdapter, new OnRequestDataListener() {
             @Override
             public void onLoadMore() {
                 new Handler().postDelayed(new Runnable() {

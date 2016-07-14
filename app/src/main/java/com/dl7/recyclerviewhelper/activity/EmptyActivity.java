@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.dl7.helperlibrary.listener.OnRecyclerViewItemClickListener;
 import com.dl7.helperlibrary.listener.OnRecyclerViewItemLongClickListener;
 import com.dl7.helperlibrary.listener.OnRequestDataListener;
-import com.dl7.helperlibrary.utils.ViewHelper;
+import com.dl7.helperlibrary.helper.RecyclerViewHelper;
 import com.dl7.recyclerviewhelper.R;
 import com.dl7.recyclerviewhelper.adapter.UserAdapter;
 import com.dl7.recyclerviewhelper.entity.UserInfo;
@@ -44,9 +44,9 @@ public class EmptyActivity extends Activity {
 
         mAdapter = new UserAdapter(this);
         mAdapter.setEmptyView(LayoutInflater.from(this).inflate(R.layout.layout_empty, null));
-//        ViewHelper.initRecyclerViewV(this, mRvList, true);
+//        RecyclerViewHelper.initRecyclerViewV(this, mRvList, true);
 
-        ViewHelper.initRecyclerViewV(this, mRvList, mAdapter, new OnRequestDataListener() {
+        RecyclerViewHelper.initRecyclerViewV(this, mRvList, mAdapter, new OnRequestDataListener() {
             @Override
             public void onLoadMore() {
             }

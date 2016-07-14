@@ -1,12 +1,15 @@
 package com.dl7.helperlibrary.adapter;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -19,11 +22,13 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.dl7.helperlibrary.helper.ItemTouchHelperViewHolder;
+
 
 /**
  * https://github.com/CymChad/BaseRecyclerViewAdapterHelper
  */
-public class BaseViewHolder extends RecyclerView.ViewHolder {
+public class BaseViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
 
     /**
      * Views indexed with their IDs
@@ -32,6 +37,8 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
 
 
     public View convertView;
+    private static int dragColor = Color.LTGRAY;
+    private static int freeColor = Color.WHITE;
 
 
     protected BaseViewHolder(View view) {
@@ -431,4 +438,33 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         return (T) view;
     }
 
+    /************************************拖拽滑动****************************************/
+
+    @Override
+    public void onItemSelected() {
+        Log.e("BaseViewHolder", ""+getAdapterPosition());
+        if (itemView instanceof CardView) {
+            ((CardView)itemView).setCardBackgroundColor(dragColor);
+        } else {
+            itemView.setBackgroundColor(dragColor);
+        }
+    }
+
+    @Override
+    public void onItemClear() {
+        Log.w("BaseViewHolder", ""+getAdapterPosition());
+        if (itemView instanceof CardView) {
+            ((CardView)itemView).setCardBackgroundColor(freeColor);
+        } else {
+            itemView.setBackgroundColor(freeColor);
+        }
+    }
+
+    public static void setDragColor(int dragColor) {
+        BaseViewHolder.dragColor = dragColor;
+    }
+
+    public static void setFreeColor(int freeColor) {
+        BaseViewHolder.freeColor = freeColor;
+    }
 }

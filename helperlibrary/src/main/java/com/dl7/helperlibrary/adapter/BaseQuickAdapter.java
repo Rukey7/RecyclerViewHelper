@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dl7.helperlibrary.R;
+import com.dl7.helperlibrary.helper.ItemTouchHelperAdapter;
+import com.dl7.helperlibrary.helper.OnStartDragListener;
 import com.dl7.helperlibrary.indicator.SpinKitView;
 import com.dl7.helperlibrary.indicator.SpriteFactory;
 import com.dl7.helperlibrary.indicator.Style;
@@ -25,7 +27,8 @@ import java.util.List;
  * Created by long on 2016/4/21.
  * 适配器基类
  */
-public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+        implements ItemTouchHelperAdapter {
 
     protected static final int HEADER_VIEW = 0x00000111;
     protected static final int LOADING_VIEW = 0x00000222;
@@ -36,6 +39,7 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
     protected int mLayoutResId;
     protected LayoutInflater mLayoutInflater;
     protected List<T> mData;
+    private View mParentView;
     // head and footer
     private View mHeaderView;
     private View mFooterView;
@@ -43,6 +47,7 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
     private OnRecyclerViewItemClickListener mItemClickListener;
     private OnRecyclerViewItemLongClickListener mItemLongClickListener;
     private OnRequestDataListener onRequestDataListener;
+    private OnStartDragListener mDragStartListener;
     // load more
     private boolean mIsLoadMoreEnable;
     private boolean mIsLoadingNow;
@@ -170,6 +175,9 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (mParentView == null) {
+            mParentView = parent;
+        }
         BaseViewHolder baseViewHolder = null;
         switch (viewType) {
             case LOADING_VIEW:
@@ -187,6 +195,8 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
             default:
                 View view = mLayoutInflater.inflate(mLayoutResId, parent, false);
                 baseViewHolder = new BaseViewHolder(view);
+                // 设置用于单项刷新的tag标识
+                baseViewHolder.itemView.setTag(R.id.view_holder_tag, baseViewHolder);
                 _initItemClickListener(baseViewHolder);
                 break;
         }
@@ -211,7 +221,8 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
         }
     }
 
-    /************************************* 刷新加载 ****************************************/
+
+    /************************************* 加载更多 ****************************************/
 
     public void setRequestDataListener(OnRequestDataListener listener) {
         this.onRequestDataListener = listener;
@@ -231,6 +242,11 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
     public void setLoadDesc(String desc) {
         _initLoadingView();
         mLoadingDesc.setText(desc);
+    }
+
+    public void setLoadColor(int color) {
+        mLoadingDesc.setTextColor(color);
+        mLoadingIcon.getIndeterminateDrawable().setColor(color);
     }
 
     public void loadComplete() {
@@ -478,5 +494,61 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
                 }
             });
         }
+    }
+
+    /************************************拖拽滑动****************************************/
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        Collections.swap(mData, fromPosition, toPosition);
+        notifyItemMoved(fromPosition, toPosition);
+        return true;
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        removeItem(position);
+    }
+
+    public void setDragStartListener(OnStartDragListener dragStartListener) {
+        mDragStartListener = dragStartListener;
+    }
+
+    protected void startDrag(RecyclerView.ViewHolder viewHolder) {
+        if (mDragStartListener != null) {
+            mDragStartListener.onStartDrag(viewHolder);
+        }
+    }
+
+    public void setDragColor(int dragColor) {
+        BaseViewHolder.setDragColor(dragColor);
+    }
+
+    public void setFreeColor(int freeColor) {
+        BaseViewHolder.setFreeColor(freeColor);
+    }
+
+    /************************************* Tag标志 ****************************************/
+
+    /**
+     * 给BaseViewHolder设置Tag
+     * @param viewHolder    目标BaseViewHolder
+     * @param tag   tag标志
+     */
+    public void setTag(BaseViewHolder viewHolder, Object tag) {
+        viewHolder.itemView.setTag(tag);
+    }
+
+    /**
+     * 根据tag标志获取BaseViewHolder
+     * @param tag   tag标志
+     * @return  目标BaseViewHolder
+     */
+    public BaseViewHolder getTag(Object tag) {
+        View view = mParentView.findViewWithTag(tag);
+        if (view == null) {
+            return null;
+        }
+        return  (BaseViewHolder) view.getTag(R.id.view_holder_tag);
     }
 }

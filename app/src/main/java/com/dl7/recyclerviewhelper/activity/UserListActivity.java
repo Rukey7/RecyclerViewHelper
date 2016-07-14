@@ -8,9 +8,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dl7.helperlibrary.helper.RecyclerViewHelper;
 import com.dl7.helperlibrary.listener.OnRecyclerViewItemClickListener;
 import com.dl7.helperlibrary.listener.OnRecyclerViewItemLongClickListener;
-import com.dl7.helperlibrary.utils.ViewHelper;
 import com.dl7.recyclerviewhelper.R;
 import com.dl7.recyclerviewhelper.adapter.UserAdapter;
 import com.dl7.recyclerviewhelper.entity.UserInfo;
@@ -36,10 +36,9 @@ public class UserListActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mAdapter = new UserAdapter(this);
-        ViewHelper.initRecyclerViewV(this, mRvList, true);
-        mRvList.setAdapter(mAdapter);
+        RecyclerViewHelper.initRecyclerViewV(this, mRvList, true, mAdapter);
 
-        for (int i = 0; i < 0; i++) {
+        for (int i = 0; i < 10; i++) {
             infoList.add(new UserInfo("Joke" + i, i));
         }
         mAdapter.updateItems(infoList);
