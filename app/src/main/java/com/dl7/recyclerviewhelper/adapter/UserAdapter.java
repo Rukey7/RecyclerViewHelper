@@ -2,8 +2,8 @@ package com.dl7.recyclerviewhelper.adapter;
 
 import android.content.Context;
 
-import com.dl7.helperlibrary.adapter.BaseQuickAdapter;
-import com.dl7.helperlibrary.adapter.BaseViewHolder;
+import com.dl7.recycler.adapter.BaseQuickAdapter;
+import com.dl7.recycler.adapter.BaseViewHolder;
 import com.dl7.recyclerviewhelper.R;
 import com.dl7.recyclerviewhelper.entity.UserInfo;
 

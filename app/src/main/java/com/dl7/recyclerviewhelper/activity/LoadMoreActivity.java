@@ -10,14 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dl7.helperlibrary.helper.RecyclerViewHelper;
-import com.dl7.helperlibrary.indicator.Style;
-import com.dl7.helperlibrary.listener.OnRecyclerViewItemClickListener;
-import com.dl7.helperlibrary.listener.OnRecyclerViewItemLongClickListener;
-import com.dl7.helperlibrary.listener.OnRequestDataListener;
+import com.dl7.recycler.helper.RecyclerViewHelper;
+import com.dl7.recycler.listener.OnRecyclerViewItemClickListener;
+import com.dl7.recycler.listener.OnRecyclerViewItemLongClickListener;
+import com.dl7.recycler.listener.OnRequestDataListener;
 import com.dl7.recyclerviewhelper.R;
 import com.dl7.recyclerviewhelper.adapter.UserAdapter;
 import com.dl7.recyclerviewhelper.entity.UserInfo;
+import com.github.ybq.android.spinkit.Style;
 
 import java.util.ArrayList;
 import java.util.List;

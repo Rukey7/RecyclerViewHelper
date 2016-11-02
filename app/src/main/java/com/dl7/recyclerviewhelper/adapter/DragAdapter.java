@@ -5,8 +5,8 @@ import android.support.v4.view.MotionEventCompat;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.dl7.helperlibrary.adapter.BaseQuickAdapter;
-import com.dl7.helperlibrary.adapter.BaseViewHolder;
+import com.dl7.recycler.adapter.BaseQuickAdapter;
+import com.dl7.recycler.adapter.BaseViewHolder;
 import com.dl7.recyclerviewhelper.R;
 
 import java.util.List;
@@ -15,6 +15,8 @@ import java.util.List;
  * Created by long on 2016/7/14.
  */
 public class DragAdapter extends BaseQuickAdapter<String> {
+
+
 
     public DragAdapter(Context context) {
         super(context);
@@ -31,7 +33,6 @@ public class DragAdapter extends BaseQuickAdapter<String> {
 
     @Override
     protected void convert(final BaseViewHolder holder, String item) {
-
         holder.setText(R.id.tv_title, item);
         holder.getView(R.id.iv_icon).setOnTouchListener(new View.OnTouchListener() {
             @Override
